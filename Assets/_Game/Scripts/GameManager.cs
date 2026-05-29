@@ -13,8 +13,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Timer")]
-    [Tooltip("Countdown length in seconds. 10 for testing; set to 300 for the real 5:00.")]
-    [SerializeField] private float startTime = 10f;
+    [Tooltip("Countdown length in seconds. 300 = the real 5:00; drop to ~10 for quick testing.")]
+    [SerializeField] private float startTime = 300f;
 
     [Header("UI")]
     [Tooltip("Text at the top of the screen that shows the remaining time.")]
@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("Panel shown when the timer runs out.")]
     [SerializeField] private GameObject losePanel;
+
+    [Tooltip("Panel shown when the player escapes (wins).")]
+    [SerializeField] private GameObject winPanel;
 
     [Header("Player")]
     [Tooltip("Disabled when the round ends so the camera stops moving.")]
@@ -35,12 +38,23 @@ public class GameManager : MonoBehaviour
         timeRemaining = startTime;
         gameOver = false;
         if (losePanel != null) losePanel.SetActive(false);
+        if (winPanel != null) winPanel.SetActive(false);
         UpdateTimerText();
     }
 
     private void Update()
     {
         if (gameOver) return;
+
+        // TEMPORARY: press K in the editor to preview the win screen before the
+        // puzzles exist. Remove this block once DoorController calls Win() for real.
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Win();
+            return;
+        }
+#endif
 
         timeRemaining -= Time.deltaTime;
 
@@ -74,15 +88,27 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Debug.Log("[GameManager] Lose: lose panel shown, cursor freed.");
+    }
+
+    /// <summary>
+    /// Call this to win the round (e.g. from DoorController once the door opens).
+    /// Shows the win screen and freezes the game.
+    /// </summary>
+    public void Win()
+    {
+        if (gameOver) return;
+        gameOver = true;
+        if (winPanel != null) winPanel.SetActive(true);
+        if (playerLook != null) playerLook.enabled = false;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     /// <summary>Hook this to the lose-screen Restart button. Reloads the scene.</summary>
     public void Restart()
     {
-        int index = SceneManager.GetActiveScene().buildIndex;
-        Debug.Log("[GameManager] Restart clicked. Reloading scene build index " + index + ".");
         Time.timeScale = 1f; // clear the pause before reloading
-        SceneManager.LoadScene(index);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

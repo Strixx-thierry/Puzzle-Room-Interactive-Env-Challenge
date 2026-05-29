@@ -69,6 +69,12 @@ public static class StartMenuBuilder
         MakeTitle("Lose Subtitle", "The bomb went off.", losePanel.transform, new Vector2(0, 60), 30, Color.white);
         var restartBtn = MakeButton("Restart Button", "Restart", losePanel.transform, res, new Vector2(0, -60));
 
+        // --- Win panel: message + Play Again (hidden until the player escapes) ---
+        var winPanel = MakePanel("Win Panel", canvasGo.transform, res, new Color(0.0f, 0.06f, 0.03f, 0.96f));
+        MakeTitle("Win Title", "YOU ESCAPED!", winPanel.transform, new Vector2(0, 140), 72, new Color(0.4f, 1f, 0.5f));
+        MakeTitle("Win Subtitle", "Bomb defused. You made it out.", winPanel.transform, new Vector2(0, 60), 30, Color.white);
+        var playAgainBtn = MakeButton("Play Again Button", "Play Again", winPanel.transform, res, new Vector2(0, -60));
+
         // --- Find the player scripts so the menu/lose screen can freeze them ---
         var playerLook = Object.FindObjectOfType<FirstPersonLook>();
         var playerMovement = Object.FindObjectOfType<FirstPersonMovement>();
@@ -85,6 +91,7 @@ public static class StartMenuBuilder
         var gmSo = new SerializedObject(gm);
         gmSo.FindProperty("timerText").objectReferenceValue = timerText;
         gmSo.FindProperty("losePanel").objectReferenceValue = losePanel;
+        gmSo.FindProperty("winPanel").objectReferenceValue = winPanel;
         gmSo.FindProperty("playerLook").objectReferenceValue = playerLook;
         gmSo.ApplyModifiedProperties();
 
@@ -95,9 +102,11 @@ public static class StartMenuBuilder
         // --- Button click events (persisted into the scene) ---
         UnityEventTools.AddPersistentListener(startBtn.onClick, menu.StartGame);
         UnityEventTools.AddPersistentListener(restartBtn.onClick, gm.Restart);
+        UnityEventTools.AddPersistentListener(playAgainBtn.onClick, gm.Restart);
 
         // Hidden by default; the controllers turn them on when needed.
         losePanel.SetActive(false);
+        winPanel.SetActive(false);
 
         EnsureSceneInBuildSettings(canvasGo.scene);
 
