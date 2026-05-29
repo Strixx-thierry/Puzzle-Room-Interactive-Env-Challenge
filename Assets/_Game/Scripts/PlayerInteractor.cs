@@ -37,6 +37,8 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (viewCamera == null) viewCamera = Camera.main;
         if (promptRoot != null) promptRoot.SetActive(false);
+        Debug.Log("[PlayerInteractor] active on '" + name + "'. Camera = " +
+                  (viewCamera != null ? viewCamera.name : "NULL (no MainCamera!)"));
     }
 
     void Update()
@@ -50,6 +52,8 @@ public class PlayerInteractor : MonoBehaviour
             current = found;
             if (current != null) current.OnFocus();
             RefreshPrompt();
+            if (current != null)
+                Debug.Log("[PlayerInteractor] looking at: " + current.name + " (press " + interactKey + ")");
         }
 
         if (current != null && Input.GetKeyDown(interactKey))

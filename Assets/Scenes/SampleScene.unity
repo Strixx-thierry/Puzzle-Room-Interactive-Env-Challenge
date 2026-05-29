@@ -339,7 +339,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
   promptMessage: Interact
+  glowWhenIdle: 1
+  idleColor: {r: 0.15, g: 1, b: 0.3, a: 1}
+  idleIntensity: 1.5
   highlightColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  focusIntensity: 6
   oneShot: 0
   onInteract:
     m_PersistentCalls:
@@ -1715,6 +1719,47 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 9164534710707832372, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
+--- !u!1 &948192853 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1923431695143165237, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
+  m_PrefabInstance: {fileID: 2122760765}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &948192857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948192853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62b3b98c0d7e29742aacea1b13fdbd66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ExitTrigger
+  winPanel: {fileID: 1719670227}
+  timer: {fileID: 318499721}
+  locked: 0
+--- !u!65 &948192858
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948192853}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 576.21094, y: 154.88399, z: 194.1123}
+  m_Center: {x: 72.75823, y: 283.83798, z: 381.51624}
 --- !u!1001 &983886111
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2593,8 +2638,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 318499720}
   - {fileID: 1954204830}
+  - {fileID: 318499720}
   - {fileID: 157862422}
   - {fileID: 1719670230}
   m_Father: {fileID: 0}
@@ -3151,6 +3196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: library
       objectReference: {fileID: 0}
+    - target: {fileID: -1923431695143165237, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
+      propertyPath: m_Name
+      value: door
+      objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -3213,6 +3262,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -5882350157361898494, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
       insertIndex: -1
       addedObject: {fileID: 944018349}
+    - targetCorrespondingSourceObject: {fileID: -1923431695143165237, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 948192858}
+    - targetCorrespondingSourceObject: {fileID: -1923431695143165237, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 948192857}
     - targetCorrespondingSourceObject: {fileID: -1612884731193790215, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
       insertIndex: -1
       addedObject: {fileID: 212360034}
