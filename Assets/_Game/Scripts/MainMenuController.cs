@@ -1,57 +1,40 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Drives the start-screen overlay that lives inside the gameplay scene.
 ///
 /// Flow:
 ///   - On play, the menu shows and the game is paused (Time.timeScale = 0,
-///     cursor unlocked) so the player reads the menu before anything moves.
-///   - Start  -> hides the menu, resumes time, locks the cursor for FPS play.
-///   - Settings -> swaps the main buttons for the settings panel.
-///   - Quit   -> closes the application (and stops Play mode in the editor).
+///     cursor unlocked) so the player reads the title before anything moves.
+///   - Start -> hides the menu, resumes time, locks the cursor for FPS play.
 ///
-/// This is a custom script written for the assignment. It demonstrates
-/// UI button events, conditional state (which panel is shown), and a
-/// volume setting persisted with PlayerPrefs.
+/// While the menu is up it also disables the player's look/movement scripts.
+/// That matters because FirstPersonLook locks the cursor and runs every frame
+/// regardless of Time.timeScale, which would otherwise steal the cursor and make
+/// the menu buttons unclickable.
 /// </summary>
 public class MainMenuController : MonoBehaviour
 {
     [Header("Panels")]
-    [Tooltip("Root object holding the Start / Settings / Quit buttons.")]
+    [Tooltip("Root object holding the title image and the Start button.")]
     [SerializeField] private GameObject mainPanel;
 
-    [Tooltip("Root object holding the volume slider and Back button.")]
-    [SerializeField] private GameObject settingsPanel;
-
-    [Header("Settings")]
-    [Tooltip("Slider that controls master volume (0..1).")]
-    [SerializeField] private Slider volumeSlider;
-
-    // PlayerPrefs key so the chosen volume is remembered between sessions.
-    private const string VolumeKey = "MasterVolume";
+    [Header("Player (disabled while the menu is up)")]
+    [SerializeField] private FirstPersonLook playerLook;
+    [SerializeField] private FirstPersonMovement playerMovement;
 
     private void Start()
     {
-        // Load saved volume (default to full) and apply it immediately.
-        float savedVolume = PlayerPrefs.GetFloat(VolumeKey, 1f);
-        AudioListener.volume = savedVolume;
-        if (volumeSlider != null)
-        {
-            volumeSlider.value = savedVolume;
-            // React to slider changes at runtime.
-            volumeSlider.onValueChanged.AddListener(SetVolume);
-        }
-
         // Show the menu and pause the game until the player presses Start.
         ShowMenu();
     }
 
-    /// <summary>Display the menu, pause gameplay, and free the cursor.</summary>
+    /// <summary>Display the menu, pause gameplay, free the cursor, freeze the player.</summary>
     public void ShowMenu()
     {
         if (mainPanel != null) mainPanel.SetActive(true);
-        if (settingsPanel != null) settingsPanel.SetActive(false);
+
+        SetPlayerControlsEnabled(false);
 
         Time.timeScale = 0f;                 // freeze gameplay
         Cursor.lockState = CursorLockMode.None;
@@ -62,42 +45,19 @@ public class MainMenuController : MonoBehaviour
     public void StartGame()
     {
         if (mainPanel != null) mainPanel.SetActive(false);
-        if (settingsPanel != null) settingsPanel.SetActive(false);
 
         Time.timeScale = 1f;                 // resume gameplay
+
+        SetPlayerControlsEnabled(true);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    /// <summary>Hook this to the Settings button. Shows the settings panel.</summary>
-    public void OpenSettings()
+    /// <summary>Enable/disable the player's look + movement scripts.</summary>
+    private void SetPlayerControlsEnabled(bool enabled)
     {
-        if (mainPanel != null) mainPanel.SetActive(false);
-        if (settingsPanel != null) settingsPanel.SetActive(true);
-    }
-
-    /// <summary>Hook this to the settings Back button. Returns to the menu.</summary>
-    public void CloseSettings()
-    {
-        if (settingsPanel != null) settingsPanel.SetActive(false);
-        if (mainPanel != null) mainPanel.SetActive(true);
-    }
-
-    /// <summary>Hook this to the volume slider. Sets and saves master volume.</summary>
-    public void SetVolume(float value)
-    {
-        AudioListener.volume = value;
-        PlayerPrefs.SetFloat(VolumeKey, value);
-        PlayerPrefs.Save();
-    }
-
-    /// <summary>Hook this to the Quit button.</summary>
-    public void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        if (playerLook != null) playerLook.enabled = enabled;
+        if (playerMovement != null) playerMovement.enabled = enabled;
     }
 }
