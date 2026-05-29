@@ -5,40 +5,39 @@ The player is locked in a room with an **armed bomb on a 5:00 countdown**. They 
 solve a chain of five interconnected environmental puzzles to derive the bomb's
 disarm code, defuse it, recover the door key, and escape before the timer hits zero.
 
-> **Status:** In development. Sections marked `TODO` are filled in as the build progresses.
-
----
-
 ## 1. Game Concept Summary
 
 - **Setting:** One enclosed room (magician's study / library blockout).
 - **Goal:** Escape the locked room before the bomb timer reaches `0:00`.
-- **Core loop:** Explore → read non-text environmental clues → solve a puzzle →
-  the solved puzzle reveals the next clue → repeat → derive the bomb code →
-  defuse the bomb → grab the door key → walk to the door → escape.
-- **Win condition:** Bomb defused and door key used on the door → door opens → player exits.
-- **Lose condition:** The 5:00 bomb timer reaches `0:00` → explosion → lose screen → restart.
-- **Clue philosophy:** All clues are **non-text / diegetic** (lights, symbols, object
-  alignment, counting, patterns). No clue is ever a written instruction or a written-out
-  code. The 4-digit bomb code is *derived from the environment*, never displayed as digits.
+- **Core loop:** Explore → solve a puzzle → it physically reveals a *countable*
+  non-text clue → repeat across the room → derive the 3-digit safe code by counting →
+  open the safe → take the door key → use it on the locked door → escape.
+- **Win condition:** Safe opened and door key used on the door → door swings open →
+  player walks through the exit trigger → win screen.
+- **Lose condition:** The 5:00 timer reaches `0:00` → lose screen → restart. (Entering a
+  wrong code on the safe also resets the entry, so the player cannot brute-force instantly.)
+- **Clue philosophy:** All clues are **non-text / diegetic** — the player *counts glowing
+  objects* (books, symbols, marks) revealed by each puzzle, and a **colour/position cue**
+  gives the order. No clue is ever a written instruction or a written-out code. The 3-digit
+  safe code is *derived from the environment*, never displayed as digits.
 
 ---
 
 ## 2. Puzzle Structure — 5 Sequential Layers
 
-The puzzles are **strictly sequential**: each solved layer physically reveals or unlocks
-the next. Progress is shown on-screen as `Puzzle Progress: X / 5` and only increments on
-genuine task completion.
+The layers are **interconnected**: lighting the room makes later clues visible, and every
+clue feeds the single safe code. Progress is shown on-screen as `Puzzle Progress: X / 5`
+and only increments on genuine task completion.
 
-| # | Layer | Player action (interaction) | Non-text clue used | What it reveals / unlocks |
+| # | Layer | Player action (interaction) | Non-text clue revealed | What it reveals / unlocks |
 |---|-------|------------------------------|--------------------|----------------------------|
-| 1 | **Light the room** | Flip 3 desk/wall switches into the correct on/off state | A flickering lamp + a UV/blacklight cue | A hidden symbol becomes visible on the wall |
-| 2 | **Symbol match** | Open the drawer/cabinet marked with the matching symbol | The wall symbol from Layer 1 | A colored key piece + reveals a rotation clue |
-| 3 | **Rotation align** | Rotate 3 objects (clock hands, a dial, a painting) until their marks align | Shapes/notches that must point the same way | A locked box pops open, exposing the picture wall |
-| 4 | **Count & order** | Read 4 framed pictures, each showing N objects, in the order given by a cue | Object counts + a light/color sequence giving the read order | The 4-digit bomb disarm code (derived, never written) |
-| 5 | **Defuse & key** | Enter the 4-digit code on the bomb keypad | Code derived in Layer 4 | Bomb disarms; a compartment opens revealing the **door key** |
+| 1 | **Light the room** | Press `F` on the desk lamp to switch it on | The light reveals **N glowing books** on a shelf — *count them* = 1st digit. It also lights a dark corner so the magnifier becomes usable. | Digit ① + unlocks Layer 2 |
+| 2 | **Magnify the mark** | Press `F` to use the magnifier on a framed picture | **N faint symbols** become visible under the lens — *count them* = 2nd digit | Digit ② |
+| 3 | **Search the furniture** | Press `F` on the chair / table to search it | A hidden cluster of **N tally marks** is revealed — *count them* = 3rd digit | Digit ③ |
+| 4 | **Crack the safe** | Press `F` on the safe → keypad canvas → enter the 3 digits in the order shown by the **colour cue** | The three digits from Layers 1–3 | Safe swings open, exposing the **door key** |
+| 5 | **Escape** | Pick up the key (`F`), then press `F` on the door | The key unlocks the door | Door swings open → exit trigger → **win** |
 
-**Win step:** Pick up the door key → approach the door → door unlocks and opens → exit trigger fires win.
+**Win step:** Open the safe → pick up the door key → approach the door → door unlocks and opens → exit trigger fires win.
 
 > Each layer is interactable, contributes to the final solution, and is tracked
 > programmatically by the `PuzzleManager`.
@@ -49,14 +48,14 @@ genuine task completion.
 
 | Clue type | Where it appears |
 |-----------|------------------|
-| Light / color change | Layer 1 lamp + blacklight reveal |
-| Symbols / icons | Wall symbol → drawer match (Layer 2) |
-| Object positioning / rotation | Dial/clock/painting alignment (Layer 3) |
-| Visual pattern + counting | Framed pictures + light sequence for read order (Layer 4) |
-| Audio / visual feedback | Disarm beep, explosion, door unlock sound |
+| Light / color change | Layer 1 lamp switches on and illuminates the countable books |
+| Counting / visual quantity | Books (L1), symbols under the magnifier (L2), tally marks (L3) → each is a digit |
+| Object positioning / colour order | A small set of coloured markers by the safe gives the order to enter the 3 digits |
+| Audio / visual feedback | Lamp click, safe-unlock clunk, door-open creak, win/lose stingers |
 
 Text on screen is limited to **non-solving** UI only: the progress counter, the timer,
-and interaction prompts (e.g. "Press E"). No text reveals an answer.
+interaction prompts ("[F] …"), and *non-solving* flavour ("a light flicked on somewhere").
+**No on-screen text ever states a digit or the code** — every number is derived by counting.
 
 ---
 
@@ -68,8 +67,8 @@ and interaction prompts (e.g. "Press E"). No text reveals an answer.
 | Mouse | Look |
 | `Left Shift` | Run |
 | `Space` | Jump |
-| `E` / Left Click | Interact (pick up, flip switch, open, enter code) |
-| `Esc` | Pause / settings |
+| `F` | Interact (turn on lamp, use magnifier, search, open safe, pick up key, open door) |
+| Mouse Left Click | Press keypad buttons on the safe canvas |
 
 *(Movement provided by the Mini First Person Controller; interaction by custom scripts.)*
 
@@ -103,12 +102,15 @@ MainMenu  ──[Start]──►  GameRoom  ──[escape]──►  Win screen
 
 | Script | Responsibility |
 |--------|----------------|
-| `MainMenuController` | Start / Settings / Quit buttons, scene loading |
-| `GameManager` | Bomb timer countdown, win/lose state, restart |
-| `PuzzleManager` | Tracks completed layers, drives `X / 5` progress, unlocks final step |
-| `Interactable` (+ `PlayerInteractor`) | Raycast interaction, "Press E" prompts |
-| `KeypadController` | Bomb code entry & validation |
-| `DoorController` | Key check + open animation + exit trigger |
+| `MainMenuController` | Start / Quit buttons, scene loading |
+| `GameManager` | 5:00 timer countdown, win/lose state, restart |
+| `PuzzleManager` | Tracks completed layers, drives `X / 5` progress + indicator dots, fires `onAllSolved` |
+| `Interactable` | Per-object glow highlight + `onInteract` UnityEvent, one-shot support |
+| `PlayerInteractor` | Camera raycast, focus highlight, `[F]` prompt, fires the focused Interactable |
+| `KeypadController` | Safe code entry canvas, validation, freezes player while open |
+| `DoorController` | Reusable hinge swing (door **and** safe lid); locked until `Unlock()`; `onOpened` |
+| `ClueHint` | Shows *non-solving* flavour hints only (never a digit) |
+| `IntroController` | Story/rules screen on load; freezes the timer until the player clicks Begin |
 
 > Demonstrates: colliders/triggers, conditional logic (`if`, `bool`, counters), and
 > event-based interaction (UnityEvents / C# events between puzzles and the manager).
@@ -134,13 +136,21 @@ Assets/
 
 ## 9. Asset Sources
 
-| Asset | Source | Link | License |
-|-------|--------|------|---------|
-| Mini First Person Controller | Unity Asset Store | TODO | TODO |
-| Room / library model | TODO (Sketchfab?) | TODO | TODO |
-| Bomb model | TODO | TODO | TODO |
-| Furniture / props | TODO | TODO | TODO |
-| SFX (beep, explosion, click) | TODO | TODO | TODO |
+| Asset (role in game) | Source | Link | License |
+|----------------------|--------|------|---------|
+| Library (room) | Sketchfab | https://sketchfab.com/3d-models/library-7fc61f0d65ee49d0b2904e85d1fa520e | CC-BY (verify on page) |
+| Bomb (timer theme) | Free3D | https://free3d.com/3d-model/bomp-maya-compleet-files-858034.html | per Free3D page |
+| Desk lamp (Puzzle 1) | Sketchfab | https://sketchfab.com/3d-models/library-desk-lamp-fe755dad093b4c27b508574b607dce8d | CC-BY (verify on page) |
+| Western safe (Puzzle 4 / lock box) | Sketchfab | https://sketchfab.com/3d-models/western-safe-fd9c2492eb7a4aabb19597af10269f5a | CC-BY (verify on page) |
+| Table | Sketchfab | https://sketchfab.com/3d-models/table-42fbbc6bc5964fb69a7154df79044a8b | CC-BY (verify on page) |
+| Books with magnifier (Puzzle 2) | Sketchfab | https://sketchfab.com/3d-models/books-with-magnifier-cc153ce6258b4e538d9fc7da5b5d0fe4 | CC-BY (verify on page) |
+| Breen chair (Puzzle 3) | Sketchfab | https://sketchfab.com/3d-models/breenchair-e696f8cb3c894137aaced90c3abf3d17 | CC-BY (verify on page) |
+| Flower pot w/ table | Sketchfab | https://sketchfab.com/3d-models/flower-pot-with-wooden-table-c9f0e8ca4c7d4eda86590eb2aaa91633 | CC-BY (verify on page) |
+| Mini First Person Controller (movement) | Unity Asset Store | (add link) | Asset Store EULA |
+
+> **License note:** most of these Sketchfab models are **CC-BY** — that means you must
+> credit the author. Open each model's page, copy the exact license + author name shown,
+> and replace "verify on page" above. Keeping this table accurate is part of the grade.
 
 ---
 
@@ -154,3 +164,4 @@ Assets/
 - [ ] All clues non-text
 - [ ] ≥ 3 custom scripts
 - [ ] Assets sourced, licensed, and organized
+
