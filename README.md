@@ -1,14 +1,14 @@
-# Puzzle Room: The Defuse Room
+# Puzzle Room: Library Escape
 
 A single-room, first-person escape puzzle built in Unity (URP).
-The player is locked in a room with an **armed bomb on a 5:00 countdown**. They must
-solve a chain of five interconnected environmental puzzles to derive the bomb's
-disarm code, defuse it, recover the door key, and escape before the timer hits zero.
+The player is locked in a **library** with a **5:00 countdown** running. They must solve a
+chain of five interconnected environmental puzzles to derive the **safe code** by counting
+non-text clues, crack the safe, recover the door key, and escape before the timer hits zero.
 
 ## 1. Game Concept Summary
 
-- **Setting:** One enclosed room (magician's study / library blockout).
-- **Goal:** Escape the locked room before the bomb timer reaches `0:00`.
+- **Setting:** One enclosed room — a library (imported `library.glb`).
+- **Goal:** Crack the safe, get the door key, and escape the library before the countdown reaches `0:00`.
 - **Core loop:** Explore → solve a puzzle → it physically reveals a *countable*
   non-text clue → repeat across the room → derive the 3-digit safe code by counting →
   open the safe → take the door key → use it on the locked door → escape.
@@ -76,25 +76,30 @@ interaction prompts ("[F] …"), and *non-solving* flavour ("a light flicked on 
 
 ## 5. Win & Lose Conditions
 
-- **Win:** All 5 layers complete → bomb defused → door key collected → door opened → exit.
-  Feedback: door-open animation, win sound, win screen.
-- **Lose:** Timer reaches `0:00`. Feedback: explosion VFX/SFX, lose screen with a **Restart** button.
-- The lose state prevents an instant win: the code cannot be entered before Layer 4 is solved,
-  and the door cannot open without the key from Layer 5.
+- **Win:** All 5 layers complete → safe opened → door key collected → door swings open → player
+  walks through the exit trigger. Feedback: door-open swing animation + **Win panel** ("YOU ESCAPED!").
+- **Lose:** The countdown reaches `0:00`. Feedback: **Lose panel** ("TIME'S UP") with a **Restart** button.
+- The lose state prevents an instant win: the safe code is *derived by counting* the puzzle clues,
+  and the door stays locked until the key from the safe (Layer 5) unlocks it.
 
 ---
 
 ## 6. Scenes & Flow
 
+The whole game runs in **one scene** (`Assets/Scenes/SampleScene.unity`). The menu, gameplay,
+and win/lose are **UI panels** layered over that single scene — no scene loading needed except
+the restart.
+
 ```
-MainMenu  ──[Start]──►  GameRoom  ──[escape]──►  Win screen
-   │                        │
-[Settings]              [timer = 0] ──► Lose screen ──[Restart]──► GameRoom
+[Start menu overlay] ──[Start]──► gameplay (time runs) ──[escape door]──► Win panel
+  (timeScale = 0)                      │
+                                  [timer = 0:00] ──► Lose panel ──[Restart]──► reload scene
 ```
 
-- **MainMenu** — Start button (loads GameRoom), Settings button (volume / sensitivity panel).
-- **GameRoom** — the playable room, bomb, puzzles, HUD (timer + progress).
-- Win / Lose are panels (or scenes) reachable from GameRoom.
+- **Start menu** — an overlay panel (`Menu Canvas` / `Main Panel`) shown on load with the game
+  paused (`Time.timeScale = 0`); the **Start** button un-pauses and locks the cursor for FPS play.
+- **Gameplay** — the library, the safe, the puzzle props, and the HUD (timer + `X / 5` progress).
+- **Win / Lose** — panels in the same scene, shown by `GameManager`; Restart reloads the scene.
 
 ---
 
