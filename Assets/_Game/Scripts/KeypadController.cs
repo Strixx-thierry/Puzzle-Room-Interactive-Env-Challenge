@@ -49,10 +49,21 @@ public class KeypadController : MonoBehaviour
     [Tooltip("Fires when the player runs out of attempts (e.g. the bomb explodes -> lose).")]
     public UnityEvent onOutOfAttempts;
 
+    [Tooltip("Key that backs out of the keypad without entering a code.")]
+    public KeyCode closeKey = KeyCode.Escape;
+
     string entry = "";
     bool solved;
+    bool isOpen;
     int attemptsUsed;
     bool outOfAttempts;
+
+    void Update()
+    {
+        // Let the player back out of the keypad (unless they already blew it / solved it).
+        if (isOpen && !outOfAttempts && Input.GetKeyDown(closeKey))
+            Close();
+    }
 
     void Awake()
     {
@@ -67,6 +78,7 @@ public class KeypadController : MonoBehaviour
         UpdateDisplay();
         if (feedbackText != null) feedbackText.text = "";
         if (canvasRoot != null) canvasRoot.SetActive(true);
+        isOpen = true;
 
         SetPlayerControl(false);
         Cursor.lockState = CursorLockMode.None;
@@ -77,6 +89,7 @@ public class KeypadController : MonoBehaviour
     public void Close()
     {
         if (canvasRoot != null) canvasRoot.SetActive(false);
+        isOpen = false;
         SetPlayerControl(true);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

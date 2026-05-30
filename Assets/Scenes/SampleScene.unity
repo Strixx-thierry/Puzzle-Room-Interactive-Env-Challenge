@@ -955,95 +955,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162973876}
   m_CullTransparentMesh: 1
---- !u!1 &186126611 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -2244430009776434822, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
-  m_PrefabInstance: {fileID: 2103326253}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &186126614
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 186126611}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.6, y: 3.48, z: 0.53}
-  m_Center: {x: 1.4187202e-14, y: 1.7457234, z: -0.0063207154}
---- !u!114 &186126615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 186126611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b786dcb8432039d43b088aafcd0330ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  promptMessage: Interact
-  glowWhenIdle: 1
-  idleColor: {r: 0.15, g: 1, b: 0.3, a: 1}
-  idleIntensity: 0.5
-  highlightColor: {r: 1, g: 0.85, b: 0.2, a: 1}
-  focusIntensity: 1.6
-  oneShot: 0
-  onInteract:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1334937621}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &186126616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 186126611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21f39ee41169c304f9e8ca116ae7c526, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ChapterClue
-  infoPanel: {fileID: 0}
-  chapterTitle: 'Chapter 4 : The Decision'
-  chapterText: "I sat in this chair for the last time on the 9th. By then the device
-    was armed\r\n built to erase the work, the room, and whoever came searching.
-    There is a way\r\nto disarm it. The combination is this story, read in order:
-    four numbers, one\r\nfrom each confession. You have held them all along.  Dr.
-    A."
-  puzzleManager: {fileID: 0}
-  puzzleIndex: 3
-  requirePreviousChapter: 1
-  lockedTitle: "Not yet\u2026"
-  lockedMessage: There are earlier pages you haven't read. Piece the story together
-    in order first.
-  unlockNext: {fileID: 0}
-  onRevealed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &212360030 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1612884731193790215, guid: 6fef64b22a7a9e9439f351cc76280052, type: 3}
@@ -1163,8 +1074,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CountdownTimer
   durationSeconds: 300
-  timerText: {fileID: 0}
-  losePanel: {fileID: 0}
+  timerText: {fileID: 318499718}
+  losePanel: {fileID: 157862419}
   useUnscaledTime: 0
 --- !u!1 &400833453
 GameObject:
@@ -3655,12 +3566,12 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: -669968435606484046, guid: 65384b24f84541e4380bb4bc7ae12e48, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65384b24f84541e4380bb4bc7ae12e48, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2031443926}
-    - targetCorrespondingSourceObject: {fileID: -669968435606484046, guid: 65384b24f84541e4380bb4bc7ae12e48, type: 3}
+      addedObject: {fileID: 994450570}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65384b24f84541e4380bb4bc7ae12e48, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2031443925}
+      addedObject: {fileID: 994450569}
   m_SourcePrefab: {fileID: 100100000, guid: 65384b24f84541e4380bb4bc7ae12e48, type: 3}
 --- !u!1 &914703891
 GameObject:
@@ -3737,6 +3648,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  closeKey: 27
 --- !u!114 &914703893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4300,6 +4212,66 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2023956223}
   m_SourcePrefab: {fileID: 100100000, guid: be862ad0f2b78ac4986387bc5f4460d0, type: 3}
+--- !u!1 &994450565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65384b24f84541e4380bb4bc7ae12e48, type: 3}
+  m_PrefabInstance: {fileID: 905371564}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &994450569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994450565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b786dcb8432039d43b088aafcd0330ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  promptMessage: Interact
+  glowWhenIdle: 1
+  idleColor: {r: 0.15, g: 1, b: 0.3, a: 1}
+  idleIntensity: 0.5
+  highlightColor: {r: 1, g: 0.85, b: 0.2, a: 1}
+  focusIntensity: 1.6
+  oneShot: 0
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 914703892}
+        m_TargetAssemblyTypeName: KeypadController, Assembly-CSharp
+        m_MethodName: Open
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!65 &994450570
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994450565}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4, y: 1.36, z: 0.28}
+  m_Center: {x: 0, y: 0.62, z: 0}
 --- !u!1 &1065177421
 GameObject:
   m_ObjectHideFlags: 0
@@ -5099,6 +5071,90 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -3455538738277734976, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
   m_PrefabInstance: {fileID: 2103326253}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1334937629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334937621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f39ee41169c304f9e8ca116ae7c526, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChapterClue
+  infoPanel: {fileID: 1914681051}
+  chapterTitle: 'Chapter 4 : The Decision'
+  chapterText: "I sat in this chair for the last time on the 9th. By then the device
+    was armed\r\n built to erase the work, the room, and whoever came searching.
+    There is a way\r\nto disarm it. The combination is this story, read in order:
+    four numbers, one\r\nfrom each confession. You have held them all along.  Dr.
+    A."
+  puzzleManager: {fileID: 962960528}
+  puzzleIndex: 3
+  requirePreviousChapter: 1
+  lockedTitle: "Not yet\u2026"
+  lockedMessage: There are earlier pages you haven't read. Piece the story together
+    in order first.
+  unlockNext: {fileID: 994450565}
+  onRevealed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1334937630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334937621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b786dcb8432039d43b088aafcd0330ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  promptMessage: Interact
+  glowWhenIdle: 1
+  idleColor: {r: 0.15, g: 1, b: 0.3, a: 0.7019608}
+  idleIntensity: 0.5
+  highlightColor: {r: 1, g: 0.85, b: 0.2, a: 0.4117647}
+  focusIntensity: 1.6
+  oneShot: 0
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1334937629}
+        m_TargetAssemblyTypeName: ChapterClue, Assembly-CSharp
+        m_MethodName: Reveal
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!65 &1334937631
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334937621}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6, y: 2.51, z: 0.52}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1341205874
 GameObject:
   m_ObjectHideFlags: 0
@@ -7492,66 +7548,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.8650312, y: 3.4428744, z: 2.2335725}
   m_Center: {x: 0, y: 0.000061035156, z: 0.0000037550926}
---- !u!1 &2031443923 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -669968435606484046, guid: 65384b24f84541e4380bb4bc7ae12e48, type: 3}
-  m_PrefabInstance: {fileID: 905371564}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2031443925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031443923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b786dcb8432039d43b088aafcd0330ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  promptMessage: Interact
-  glowWhenIdle: 1
-  idleColor: {r: 0.15, g: 1, b: 0.3, a: 1}
-  idleIntensity: 0.5
-  highlightColor: {r: 1, g: 0.85, b: 0.2, a: 1}
-  focusIntensity: 1.6
-  oneShot: 0
-  onInteract:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 914703892}
-        m_TargetAssemblyTypeName: KeypadController, Assembly-CSharp
-        m_MethodName: Open
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!65 &2031443926
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2031443923}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.3, y: 0.9, z: 0.26}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2044960874
 GameObject:
   m_ObjectHideFlags: 0
@@ -7886,15 +7882,15 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: -2244430009776434822, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
+    - targetCorrespondingSourceObject: {fileID: -3455538738277734976, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 186126614}
-    - targetCorrespondingSourceObject: {fileID: -2244430009776434822, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
+      addedObject: {fileID: 1334937631}
+    - targetCorrespondingSourceObject: {fileID: -3455538738277734976, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 186126616}
-    - targetCorrespondingSourceObject: {fileID: -2244430009776434822, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
+      addedObject: {fileID: 1334937630}
+    - targetCorrespondingSourceObject: {fileID: -3455538738277734976, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 186126615}
+      addedObject: {fileID: 1334937629}
   m_SourcePrefab: {fileID: -4161369568681901532, guid: 33de261c89e1b6d40bf76748b198f5f1, type: 3}
 --- !u!1001 &2122760765
 PrefabInstance:
