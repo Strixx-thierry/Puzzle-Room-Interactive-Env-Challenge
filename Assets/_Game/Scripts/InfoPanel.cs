@@ -25,12 +25,20 @@ public class InfoPanel : MonoBehaviour
     [Tooltip("Frozen while the overlay is open (FirstPersonLook, FirstPersonMovement, PlayerInteractor).")]
     public Behaviour[] disableWhileOpen;
 
+    [Tooltip("Player Rigidbody — its motion is zeroed while reading so it can't drift. Auto-found if empty.")]
+    public Rigidbody playerBody;
+
     [Tooltip("Called when the overlay is closed.")]
     public UnityEvent onClosed;
 
     void Awake()
     {
         if (panelRoot != null) panelRoot.SetActive(false);
+        if (playerBody == null)
+        {
+            var move = Object.FindFirstObjectByType<FirstPersonMovement>();
+            if (move != null) playerBody = move.GetComponent<Rigidbody>();
+        }
     }
 
     /// <summary>Show a chapter. Usually called by a ChapterClue, not the Inspector directly.</summary>
@@ -40,6 +48,14 @@ public class InfoPanel : MonoBehaviour
         if (bodyText != null) bodyText.text = body;
         if (panelRoot != null) panelRoot.SetActive(true);
         SetControl(false);
+
+        // Stop any leftover drift/spin so the player is dead still while reading.
+        if (playerBody != null)
+        {
+            playerBody.linearVelocity = Vector3.zero;
+            playerBody.angularVelocity = Vector3.zero;
+        }
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
