@@ -1,0 +1,55 @@
+using UnityEngine;
+using UnityEngine.Events;
+
+/// <summary>
+/// One chapter of the story, attached to a puzzle item. When the item's Interactable fires
+/// (player pressed F), wire its On Interact to this component's <see cref="Reveal"/>:
+///   • shows the chapter text in the shared <see cref="InfoPanel"/> overlay,
+///   • ticks this puzzle off on the <see cref="PuzzleManager"/> (X / 5),
+///   • enables the NEXT item so the puzzles must be done in order.
+///
+/// Put one of these on each clue object, type its chapter in the Inspector, set its index,
+/// and drag the next item into Unlock Next.
+/// </summary>
+public class ChapterClue : MonoBehaviour
+{
+    [Header("Overlay")]
+    [Tooltip("The shared chapter overlay in the scene.")]
+    public InfoPanel infoPanel;
+
+    [Tooltip("Heading, e.g. 'Chapter 1 — Why he did it'.")]
+    public string chapterTitle = "Chapter 1";
+
+    [TextArea(4, 12)]
+    [Tooltip("The chapter story text. Tuck the puzzle number for the bomb in here somewhere.")]
+    public string chapterText = "";
+
+    [Header("Progress")]
+    [Tooltip("The room's PuzzleManager.")]
+    public PuzzleManager puzzleManager;
+
+    [Tooltip("Which puzzle this is (0-based: chapter 1 = 0).")]
+    public int puzzleIndex = 0;
+
+    [Header("Order")]
+    [Tooltip("The next item to enable once this chapter is read (kept disabled until then). " +
+             "Leave empty for the last clue.")]
+    public GameObject unlockNext;
+
+    [Tooltip("Extra actions when revealed (open the safe lid, play a sound, etc.).")]
+    public UnityEvent onRevealed;
+
+    bool revealed;
+
+    /// <summary>Hook the item's Interactable.onInteract to this.</summary>
+    public void Reveal()
+    {
+        if (revealed) return;
+        revealed = true;
+
+        if (infoPanel != null) infoPanel.Show(chapterTitle, chapterText);
+        if (puzzleManager != null) puzzleManager.Solve(puzzleIndex);
+        if (unlockNext != null) unlockNext.SetActive(true);
+        onRevealed?.Invoke();
+    }
+}

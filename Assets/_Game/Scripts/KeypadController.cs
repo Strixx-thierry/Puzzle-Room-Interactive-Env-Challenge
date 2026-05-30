@@ -24,6 +24,9 @@ public class KeypadController : MonoBehaviour
     [Tooltip("Maximum number of digits the player can type.")]
     public int maxLength = 4;
 
+    [Tooltip("Wrong-guess limit (e.g. the bomb = 3). 0 = unlimited.")]
+    public int maxAttempts = 0;
+
     [Header("UI")]
     [Tooltip("Root of the keypad canvas (toggled on/off).")]
     public GameObject canvasRoot;
@@ -43,8 +46,13 @@ public class KeypadController : MonoBehaviour
     public UnityEvent onSolved;
     public UnityEvent onWrong;
 
+    [Tooltip("Fires when the player runs out of attempts (e.g. the bomb explodes -> lose).")]
+    public UnityEvent onOutOfAttempts;
+
     string entry = "";
     bool solved;
+    int attemptsUsed;
+    bool outOfAttempts;
 
     void Awake()
     {
@@ -106,19 +114,34 @@ public class KeypadController : MonoBehaviour
     /// <summary>Wire the Enter button here. Validates the entered code.</summary>
     public void Submit()
     {
+        if (outOfAttempts) return;
+
         if (entry == correctCode)
         {
             solved = true;
             if (feedbackText != null) feedbackText.text = "Correct!";
             onSolved?.Invoke();
             Close();
+            return;
         }
-        else
+
+        // Wrong guess.
+        attemptsUsed++;
+        entry = "";
+        UpdateDisplay();
+        onWrong?.Invoke();
+
+        if (maxAttempts > 0 && attemptsUsed >= maxAttempts)
         {
-            if (feedbackText != null) feedbackText.text = "Wrong code";
-            entry = "";
-            UpdateDisplay();
-            onWrong?.Invoke();
+            outOfAttempts = true;
+            if (feedbackText != null) feedbackText.text = "OUT OF ATTEMPTS!";
+            onOutOfAttempts?.Invoke();   // e.g. bomb explodes -> Lose
+        }
+        else if (feedbackText != null)
+        {
+            feedbackText.text = maxAttempts > 0
+                ? "Wrong — " + (maxAttempts - attemptsUsed) + " tries left"
+                : "Wrong code";
         }
     }
 

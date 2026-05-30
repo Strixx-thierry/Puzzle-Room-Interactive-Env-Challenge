@@ -25,14 +25,14 @@ public class Interactable : MonoBehaviour
     public Color idleColor = new Color(0.15f, 1f, 0.3f);
 
     [Tooltip("Idle brightness multiplier.")]
-    public float idleIntensity = 1.5f;
+    public float idleIntensity = 0.5f;
 
     [Header("Glow — Focus state (looking at it)")]
     [Tooltip("Focus glow colour. YELLOW = 'you're looking at me, press F'.")]
     public Color highlightColor = new Color(1f, 0.85f, 0.2f);
 
-    [Tooltip("Focus brightness multiplier (much stronger than idle).")]
-    public float focusIntensity = 6f;
+    [Tooltip("Focus brightness multiplier (a bit stronger than idle, but not blinding).")]
+    public float focusIntensity = 1.6f;
 
     [Header("Behaviour")]
     [Tooltip("If true the object can no longer be interacted with after the first interaction.")]
@@ -91,6 +91,8 @@ public class Interactable : MonoBehaviour
     {
         if (!CanInteract) return;
         used = true;
+        Debug.Log("[Interactable] F pressed on '" + name + "' — firing onInteract (" +
+                  (onInteract == null ? 0 : onInteract.GetPersistentEventCount()) + " listeners).");
         if (oneShot) { highlighted = false; RestoreOriginal(); } // used up -> stop glowing
         onInteract?.Invoke();
     }

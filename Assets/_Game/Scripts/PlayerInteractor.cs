@@ -2,21 +2,19 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Lives on the player camera. Every frame it casts a short ray straight ahead; if it
-/// hits an <see cref="Interactable"/> within range, that object lights up and the HUD
-/// shows a "[F] {message}" prompt. Pressing the interact key triggers the object.
+/// Proximity interaction. Each frame it finds the NEAREST <see cref="Interactable"/> within
+/// <see cref="range"/> of the player. That object lights up (focus glow) and the HUD shows
+/// a "[F] {message}" prompt. Pressing the interact key fires it — no aiming needed, you just
+/// have to be standing near it.
 ///
-/// Attach this to the camera (or anything that points where the player looks). If you
-/// leave the camera field empty it grabs Camera.main automatically.
+/// Put this on the player (or the camera). It uses this object's position as the centre of
+/// the proximity check, so it does not depend on any camera tag.
 /// </summary>
 public class PlayerInteractor : MonoBehaviour
 {
-    [Header("Raycast")]
-    [Tooltip("How close the player must be looking to interact (metres).")]
+    [Header("Proximity")]
+    [Tooltip("How close (metres) the player must be to interact.")]
     public float range = 3f;
-
-    [Tooltip("Camera the ray is cast from. Leave empty to use Camera.main.")]
-    public Camera viewCamera;
 
     [Tooltip("Which layers count as interactable. Default = Everything.")]
     public LayerMask interactMask = ~0;
@@ -25,7 +23,7 @@ public class PlayerInteractor : MonoBehaviour
     public KeyCode interactKey = KeyCode.F;
 
     [Header("UI")]
-    [Tooltip("Root object of the prompt (enabled only while looking at something).")]
+    [Tooltip("Root object of the prompt (enabled only while near something).")]
     public GameObject promptRoot;
 
     [Tooltip("Text label that displays the prompt message.")]
@@ -35,17 +33,14 @@ public class PlayerInteractor : MonoBehaviour
 
     void Awake()
     {
-        if (viewCamera == null) viewCamera = Camera.main;
         if (promptRoot != null) promptRoot.SetActive(false);
-        Debug.Log("[PlayerInteractor] active on '" + name + "'. Camera = " +
-                  (viewCamera != null ? viewCamera.name : "NULL (no MainCamera!)"));
+        Debug.Log("[PlayerInteractor] proximity interactor active on '" + name + "', range " + range + "m.");
     }
 
     void Update()
     {
-        Interactable found = FindInteractable();
+        Interactable found = FindNearest();
 
-        // Focus changed: unfocus the old one, focus the new one, update the prompt.
         if (found != current)
         {
             if (current != null) current.OnUnfocus();
@@ -53,13 +48,12 @@ public class PlayerInteractor : MonoBehaviour
             if (current != null) current.OnFocus();
             RefreshPrompt();
             if (current != null)
-                Debug.Log("[PlayerInteractor] looking at: " + current.name + " (press " + interactKey + ")");
+                Debug.Log("[PlayerInteractor] near: " + current.name + " (press " + interactKey + ")");
         }
 
         if (current != null && Input.GetKeyDown(interactKey))
         {
             current.Interact();
-            // The interaction may have disabled the object (one-shot); refresh prompt.
             if (!current.CanInteract)
             {
                 current.OnUnfocus();
@@ -69,16 +63,22 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    Interactable FindInteractable()
+    /// <summary>Nearest interactable whose collider is within range of this object.</summary>
+    Interactable FindNearest()
     {
-        if (viewCamera == null) return null;
-        Ray ray = new Ray(viewCamera.transform.position, viewCamera.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, range, interactMask, QueryTriggerInteraction.Ignore))
+        Vector3 origin = transform.position;
+        Collider[] hits = Physics.OverlapSphere(origin, range, interactMask, QueryTriggerInteraction.Ignore);
+
+        Interactable best = null;
+        float bestDist = float.MaxValue;
+        foreach (var h in hits)
         {
-            Interactable it = hit.collider.GetComponentInParent<Interactable>();
-            if (it != null && it.CanInteract) return it;
+            Interactable it = h.GetComponentInParent<Interactable>();
+            if (it == null || !it.CanInteract) continue;
+            float d = (it.transform.position - origin).sqrMagnitude;
+            if (d < bestDist) { bestDist = d; best = it; }
         }
-        return null;
+        return best;
     }
 
     void RefreshPrompt()
