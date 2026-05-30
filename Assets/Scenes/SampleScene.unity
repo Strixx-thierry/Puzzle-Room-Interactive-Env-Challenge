@@ -602,7 +602,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExitTrigger
   winPanel: {fileID: 1719670227}
   timer: {fileID: 318499721}
-  puzzleManager: {fileID: 0}
+  puzzleManager: {fileID: 962960528}
+  requireAllSolved: 1
   locked: 0
 --- !u!65 &52032602
 BoxCollider:
@@ -5663,7 +5664,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExitTrigger
   winPanel: {fileID: 1719670227}
   timer: {fileID: 318499721}
-  puzzleManager: {fileID: 0}
+  puzzleManager: {fileID: 962960528}
+  requireAllSolved: 1
   locked: 0
 --- !u!65 &859316602
 BoxCollider:
