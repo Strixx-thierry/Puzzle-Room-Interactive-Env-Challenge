@@ -23,8 +23,12 @@ public class ExitTrigger : MonoBehaviour
     public CountdownTimer timer;
 
     [Header("Gate — escape only when puzzles are done")]
-    [Tooltip("If set, the player can only escape once ALL puzzles here are solved (X / 5).")]
+    [Tooltip("The room's PuzzleManager. The player can only escape once ALL puzzles are solved (X / 5).")]
     public PuzzleManager puzzleManager;
+
+    [Tooltip("Strict (recommended): escaping is IMPOSSIBLE unless a PuzzleManager is set AND every " +
+             "puzzle is solved. If this is off and no manager is assigned, the player could leave freely.")]
+    public bool requireAllSolved = true;
 
     [Tooltip("Simple manual lock. If true, Unlock() must be called before escaping.")]
     public bool locked = false;
@@ -53,8 +57,16 @@ public class ExitTrigger : MonoBehaviour
     {
         if (won || !playerInside) return;
         if (locked) return;
-        // Gate on the puzzles: if a manager is set, every puzzle must be solved.
-        if (puzzleManager != null && !puzzleManager.AllSolved) return;
+
+        // Strict gate: a manager must exist AND report every puzzle solved.
+        if (puzzleManager != null)
+        {
+            if (!puzzleManager.AllSolved) return;   // not 5 / 5 yet → ignore the doorway entirely
+        }
+        else if (requireAllSolved)
+        {
+            return;                                  // no manager assigned → never win (fail-safe)
+        }
 
         Win();
     }
