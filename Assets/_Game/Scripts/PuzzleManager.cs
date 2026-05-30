@@ -42,11 +42,15 @@ public class PuzzleManager : MonoBehaviour
     /// <summary>Mark a specific puzzle (1-based or 0-based, your choice) as solved.</summary>
     public void Solve(int puzzleIndex)
     {
+        Debug.Log("[PuzzleManager] Solve(" + puzzleIndex + ") called on '" + name +
+                  "'. progressText set? " + (progressText != null) +
+                  ". array size " + solved.Length);
         if (puzzleIndex < 0 || puzzleIndex >= solved.Length) return;
-        if (solved[puzzleIndex]) return; // already solved
+        if (solved[puzzleIndex]) { Debug.Log("[PuzzleManager] index " + puzzleIndex + " already solved — ignored."); return; }
 
         solved[puzzleIndex] = true;
         solvedCount++;
+        Debug.Log("[PuzzleManager] -> now " + solvedCount + " / " + totalPuzzles);
 
         if (solvedIndicators != null && puzzleIndex < solvedIndicators.Length &&
             solvedIndicators[puzzleIndex] != null)

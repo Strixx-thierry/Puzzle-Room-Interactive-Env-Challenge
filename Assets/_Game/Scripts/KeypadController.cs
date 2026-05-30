@@ -136,6 +136,8 @@ public class KeypadController : MonoBehaviour
             outOfAttempts = true;
             if (feedbackText != null) feedbackText.text = "OUT OF ATTEMPTS!";
             onOutOfAttempts?.Invoke();   // e.g. bomb explodes -> Lose
+            // Hide the keypad so the Lose screen behind it is visible.
+            if (canvasRoot != null) canvasRoot.SetActive(false);
         }
         else if (feedbackText != null)
         {

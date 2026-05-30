@@ -31,9 +31,21 @@ public class ChapterClue : MonoBehaviour
     [Tooltip("Which puzzle this is (0-based: chapter 1 = 0).")]
     public int puzzleIndex = 0;
 
-    [Header("Order")]
-    [Tooltip("The next item to enable once this chapter is read (kept disabled until then). " +
-             "Leave empty for the last clue.")]
+    [Header("Order gate")]
+    [Tooltip("If on, this chapter can only be read once the PREVIOUS puzzle (index - 1) is solved. " +
+             "Keeps all props visible but forces the player to go in order. The first chapter (index 0) " +
+             "is never gated.")]
+    public bool requirePreviousChapter = true;
+
+    [Tooltip("Title shown when the player tries this chapter too early.")]
+    public string lockedTitle = "Not yet…";
+
+    [TextArea(2, 5)]
+    [Tooltip("Message shown when the player tries this chapter too early.")]
+    public string lockedMessage = "There are earlier pages you haven't read. Piece the story together in order first.";
+
+    [Header("Optional")]
+    [Tooltip("Rarely needed: a GameObject to enable when this is read (Option A style). Leave empty.")]
     public GameObject unlockNext;
 
     [Tooltip("Extra actions when revealed (open the safe lid, play a sound, etc.).")]
@@ -45,8 +57,16 @@ public class ChapterClue : MonoBehaviour
     public void Reveal()
     {
         if (revealed) return;
-        revealed = true;
 
+        // Order gate: can't read this chapter until the previous one is read.
+        if (requirePreviousChapter && puzzleManager != null && puzzleIndex > 0 &&
+            !puzzleManager.IsSolved(puzzleIndex - 1))
+        {
+            if (infoPanel != null) infoPanel.Show(lockedTitle, lockedMessage);
+            return; // not revealed, not counted — they can try again later
+        }
+
+        revealed = true;
         if (infoPanel != null) infoPanel.Show(chapterTitle, chapterText);
         if (puzzleManager != null) puzzleManager.Solve(puzzleIndex);
         if (unlockNext != null) unlockNext.SetActive(true);

@@ -70,6 +70,12 @@ public class CountdownTimer : MonoBehaviour
         Cursor.visible = true;
     }
 
+    /// <summary>Trigger the lose state from outside (e.g. the bomb running out of attempts).</summary>
+    public void ForceLose()
+    {
+        if (!finished) Lose();
+    }
+
     /// <summary>Hook to a Restart button if you want; reloads the current scene.</summary>
     public void Restart()
     {
